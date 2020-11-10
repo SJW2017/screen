@@ -5,9 +5,11 @@ import Antd from 'ant-design-vue'
 import App from './App'
 import 'ant-design-vue/dist/antd.css'
 import router from './router'
-
+import vuescroll from 'vuescroll'
+import 'vuescroll/dist/vuescroll.css'
 Vue.config.productionTip = false
 Vue.use(Antd)
+Vue.use(vuescroll)
 
 /* eslint-disable no-new */
 new Vue({

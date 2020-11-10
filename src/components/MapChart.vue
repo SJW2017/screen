@@ -65,7 +65,6 @@ export default {
               stroke: '#ccc',
               lineWidth: 1
             })
-
           // 可视化用户数据
           const userData = [
             { name: 'Russia', value: 86.8 },
