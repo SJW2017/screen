@@ -1,5 +1,12 @@
 <template>
-  <div id="barchartx"></div>
+  <div>
+    <a-row class="list-header">
+      单品销售排行榜：单品/总销售量
+    </a-row>
+    <vue-scroll :ops="ops" style="width:100%;height:100%">
+      <div id="barchartx"></div>
+    </vue-scroll>
+  </div>
 </template>
 
 <script>
@@ -20,7 +27,21 @@ export default {
         { type: '社会公共管理', value: 672 },
         { type: '医疗卫生', value: 868 },
         { type: '金融保险', value: 1234 }
-      ]
+      ],
+      ops: {
+        vuescroll: {},
+        scrollPanel: {},
+        rail: {
+          keepShow: true
+        },
+        bar: {
+          hoverStyle: true,
+          onlyShowBarOnScroll: false,
+          background: '#F5F5F5',
+          opacity: 0.5,
+          'overflow-x': 'hidden'
+        }
+      }
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）

@@ -10,16 +10,14 @@
             <div class="list-box-top">
               <ListBox></ListBox>
             </div>
-            <a-row class="list-box-bottom">
+            <a-row class="list-box-bottom" :gutter="16">
               <!-- 库存预警 -->
               <a-col :span="9">
                 <ListBoxProduct></ListBoxProduct>
               </a-col>
               <!-- 产品排行榜 -->
               <a-col :span="15" class="left-box-right">
-                <vue-scroll :ops="ops" style="width:100%;height:100%">
-                  <BarChartx></BarChartx>
-                </vue-scroll>
+                <BarChartx></BarChartx>
               </a-col>
             </a-row>
           </div>
@@ -188,21 +186,7 @@ export default {
             }
           ]
         }
-      ],
-      ops: {
-        vuescroll: {},
-        scrollPanel: {},
-        rail: {
-          keepShow: true
-        },
-        bar: {
-          hoverStyle: true,
-          onlyShowBarOnScroll: false,
-          background: '#F5F5F5',
-          opacity: 0.5,
-          'overflow-x': 'hidden'
-        }
-      }
+      ]
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
@@ -362,11 +346,13 @@ h1 {
 }
 .list-box-top {
   width: 100%;
-  height: 48%;
+  height: 47%;
+  margin-bottom: 10px;
 }
 .list-box-bottom {
   width: 100%;
-  height: 52%;
+  height: 51%;
+  margin-bottom: 10px;
 }
 .left-box-right {
   height: 100%;
