@@ -31,8 +31,8 @@ export default {
     tryfirst() {
       const chart1 = new Chart({
         container: 'c3',
-        width: 300,
-        height: 150
+        width: 480,
+        height: 330
       })
       chart1.data(this.tryfirstData)
       chart1

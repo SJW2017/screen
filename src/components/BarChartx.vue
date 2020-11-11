@@ -9,8 +9,6 @@ export default {
   name: 'barchartx',
   data() {
     return {
-      msg: '欢迎来到菜鸟教程！1',
-      chart: null,
       tryfirstData: [
         { type: '汽车', value: 34 },
         { type: '建材家居', value: 85 },
@@ -37,7 +35,7 @@ export default {
       const chart1 = new Chart({
         container: 'barchartx',
         autoFit: true,
-        height: 500
+        height: 400
       })
       chart1.data(this.tryfirstData)
       chart1.scale({

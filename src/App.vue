@@ -6,9 +6,22 @@
         <!-- top-left -->
         <a-col :span="7">
           <div class="border-light top-box">
-            <div class="list-box">
+            <!-- 订货排行榜 -->
+            <div class="list-box-top">
               <ListBox></ListBox>
             </div>
+            <a-row class="list-box-bottom">
+              <!-- 库存预警 -->
+              <a-col :span="9">
+                <ListBoxProduct></ListBoxProduct>
+              </a-col>
+              <!-- 产品排行榜 -->
+              <a-col :span="15" class="left-box-right">
+                <vue-scroll :ops="ops" style="width:100%;height:100%">
+                  <BarChartx></BarChartx>
+                </vue-scroll>
+              </a-col>
+            </a-row>
           </div>
         </a-col>
         <!-- top-middle -->
@@ -44,24 +57,40 @@
         </a-col>
         <!-- top-right -->
         <a-col :span="7">
-          <div class="border-light top-box">
-            <ChartOne></ChartOne>
-            <PieChart></PieChart>
-            <div id="c1"></div>
-            <div id="c2"></div>
+          <div class="top-box">
+            <!-- 报单排行榜 -->
+            <div class="margin-b-10 border-light">
+              <ListBoxSorder></ListBoxSorder>
+            </div>
+            <!-- 复销排行榜 -->
+            <div class="right-box-bottom border-light">
+              <ListBoxStore></ListBoxStore>
+            </div>
+            <!-- <div id="c1"></div>
+            <div id="c2"></div> -->
           </div>
         </a-col>
       </a-row>
       <!-- 下部分 -->
       <a-row>
-        <a-col :span="11">
-          <div class="border-light bottom-box padding-r-0 ">
-            <vue-scroll :ops="ops" style="width:100%;height:100%">
-              <BarChartx></BarChartx>
-            </vue-scroll>
+        <a-col :span="12">
+          <div class="border-light bottom-box padding-r-2 ">
+            <a-col :span="14">
+              <StackedBarChart></StackedBarChart>
+            </a-col>
+            <a-col :span="10"></a-col>
           </div>
         </a-col>
-        <a-col :span="13"> </a-col>
+        <a-col :span="12">
+          <a-row>
+            <a-col :span="12">
+              <StoreStatistics></StoreStatistics>
+            </a-col>
+            <a-col :span="12">
+              <BrokenLine></BrokenLine>
+            </a-col>
+          </a-row>
+        </a-col>
       </a-row>
     </div>
   </a-config-provider>
@@ -70,11 +99,17 @@
 <script>
 import Hello from './components/Hello'
 import ChartOne from './components/ChartOne'
+import StackedBarChart from './components/StackedBarChart'
+import StoreStatistics from './components/StoreStatistics'
+import BrokenLine from './components/BrokenLine'
 import MapChart from './components/MapChart'
 import PieChart from './components/PieChart'
 import Instrument from './components/Instrument'
 import BarChartx from './components/BarChartx'
 import ListBox from './components/ListBox'
+import ListBoxProduct from './components/ListBoxProduct'
+import ListBoxSorder from './components/ListBoxSorder'
+import ListBoxStore from './components/ListBoxStore'
 
 import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
 import moment from 'moment'
@@ -93,7 +128,13 @@ export default {
     PieChart,
     Instrument,
     BarChartx,
-    ListBox
+    ListBox,
+    ListBoxProduct,
+    ListBoxSorder,
+    ListBoxStore,
+    StackedBarChart,
+    StoreStatistics,
+    BrokenLine
   },
   data() {
     return {
@@ -168,8 +209,8 @@ export default {
   created() {},
   // 生命周期 - 载入后, Vue 实例挂载到实际的 DOM 操作完成，一般在该过程进行 Ajax 交互
   mounted() {
-    this.initComponent()
-    this.tryfirst()
+    // this.initComponent()
+    // this.tryfirst()
   },
   // 方法集合
   methods: {
@@ -209,6 +250,23 @@ export default {
 </script>
 <!-- 样式代码 -->
 <style>
+::-webkit-scrollbar {
+  /*滚动条整体样式*/
+  width: 2px; /*高宽分别对应横竖滚动条的尺寸*/
+  height: 1px;
+}
+::-webkit-scrollbar-thumb {
+  /*滚动条里面小方块*/
+  border-radius: 10px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.2);
+}
+::-webkit-scrollbar-track {
+  /*滚动条里面轨道*/
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0);
+}
 .__bar-is-vertical {
   right: -1px !important;
 }
@@ -217,6 +275,9 @@ export default {
 }
 h1 {
   color: #fff;
+}
+.margin-b-10 {
+  margin-bottom: 10px;
 }
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -235,7 +296,7 @@ h1 {
   height: 570px;
   margin-bottom: 10px;
 }
-.padding-r-0 {
+.padding-r-2 {
   padding-right: 2px !important;
 }
 .border-light {
@@ -246,7 +307,7 @@ h1 {
   -webkit-box-shadow: 0 0 8px #ddd;
   padding: 10px;
 }
-.border-light-b:hover {
+.border-light:hover {
   border: #fc0 solid 1px;
   box-shadow: 0 0 8px #ddd;
   -moz-box-shadow: 0 0 8px #ddd;
@@ -299,9 +360,15 @@ h1 {
   font-size: 20px;
   font-weight: 700;
 }
-.list-box {
+.list-box-top {
   width: 100%;
   height: 48%;
-  background-color: #fc0;
+}
+.list-box-bottom {
+  width: 100%;
+  height: 52%;
+}
+.left-box-right {
+  height: 100%;
 }
 </style>

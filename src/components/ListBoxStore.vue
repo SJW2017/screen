@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-row class="list-header">
-      各省订货总量排行榜
+      各省店铺复销量排行榜
     </a-row>
     <a-row :gutter="16">
       <a-col :span="4">排名</a-col>
@@ -72,7 +72,7 @@ import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 const fakeDataUrl =
   'https://randomuser.me/api/?results=10&inc=name,gender,email,nat&noinfo'
 export default {
-  name: 'listbox',
+  name: 'listboxstore',
   directives: { infiniteScroll },
   components: {
     RecycleScroller
@@ -103,9 +103,9 @@ export default {
     // 改为list
     this.dataList = this.dataList.map((item, index) => ({ ...item, index }))
 
-    this.fetchData((res) => {
-      this.data = res.results.map((item, index) => ({ ...item, index }))
-    })
+    // this.fetchData((res) => {
+    //   this.data = res.results.map((item, index) => ({ ...item, index }))
+    // })
   },
   methods: {
     fetchData(callback) {

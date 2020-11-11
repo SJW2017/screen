@@ -1,19 +1,17 @@
 <template>
   <div>
     <a-row class="list-header">
-      各省订货总量排行榜
+      库存预警
     </a-row>
-    <a-row :gutter="16">
-      <a-col :span="4">排名</a-col>
-      <a-col :span="4">省份</a-col>
-      <a-col :span="4">数量</a-col>
-      <a-col :span="8">占比</a-col>
-      <a-col :span="4"></a-col>
+    <a-row>
+      <a-col :span="8">排名</a-col>
+      <a-col :span="8">产品</a-col>
+      <a-col :span="8">存库</a-col>
     </a-row>
     <a-list>
       <RecycleScroller
         v-infinite-scroll="handleInfiniteOnLoad"
-        style="height: 210px"
+        style="height: 240px"
         :items="dataList"
         :item-size="30"
         key-field="id"
@@ -21,42 +19,11 @@
         :infinite-scroll-distance="10"
       >
         <a-list-item slot-scope="{ item }">
-          <a-col :span="4">
+          <a-col :span="8">
             <i class="list-sort">{{ item.sort }}</i>
           </a-col>
-          <a-col :span="4">{{ item.province }}</a-col>
-          <a-col :span="4">{{ item.nub }}</a-col>
-          <a-col :span="8">
-            <a-progress
-              v-if="item.index == 0"
-              :percent="item.percent"
-              strokeColor="#ff3a30"
-              status="active"
-            />
-            <a-progress
-              v-if="item.index == 1"
-              :percent="item.percent"
-              strokeColor="#ff9502"
-              status="active"
-            />
-            <a-progress
-              v-if="item.index == 2"
-              :percent="item.percent"
-              strokeColor="#00bb7a"
-              status="active"
-            />
-            <a-progress
-              v-if="item.index > 2"
-              :percent="item.percent"
-              status="active"
-            />
-          </a-col>
-          <a-col :span="4">
-            <!-- <a-button type="dashed" size="small"> 详情 </a-button> -->
-            <a-button type="link">
-              详情
-            </a-button>
-          </a-col>
+          <a-col :span="8">{{ item.province }}</a-col>
+          <a-col :span="8">{{ item.nub }}</a-col>
         </a-list-item>
       </RecycleScroller>
       <a-spin v-if="loading" class="demo-loading" />
@@ -72,7 +39,7 @@ import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
 const fakeDataUrl =
   'https://randomuser.me/api/?results=10&inc=name,gender,email,nat&noinfo'
 export default {
-  name: 'listbox',
+  name: 'listboxproduct',
   directives: { infiniteScroll },
   components: {
     RecycleScroller
@@ -102,10 +69,9 @@ export default {
   beforeMount() {
     // 改为list
     this.dataList = this.dataList.map((item, index) => ({ ...item, index }))
-
-    this.fetchData((res) => {
-      this.data = res.results.map((item, index) => ({ ...item, index }))
-    })
+    // this.fetchData((res) => {
+    //   this.data = res.results.map((item, index) => ({ ...item, index }))
+    // })
   },
   methods: {
     fetchData(callback) {
