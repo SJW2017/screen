@@ -6,11 +6,13 @@ import App from './App'
 import 'ant-design-vue/dist/antd.css'
 import router from './router'
 import vuescroll from 'vuescroll'
+import globalComponent from './components'
+
 import 'vuescroll/dist/vuescroll.css'
 Vue.config.productionTip = false
 Vue.use(Antd)
 Vue.use(vuescroll)
-
+Vue.use(globalComponent)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

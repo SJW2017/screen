@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-row class="list-header">
-      各省订货总量排行榜
+      {{ title }}
     </a-row>
     <a-row :gutter="16">
       <a-col :span="4">排名</a-col>
@@ -65,60 +65,28 @@
 </template>
 
 <script>
-import reqwest from 'reqwest'
 import infiniteScroll from 'vue-infinite-scroll'
 import { RecycleScroller } from 'vue-virtual-scroller'
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css'
-const fakeDataUrl =
-  'https://randomuser.me/api/?results=10&inc=name,gender,email,nat&noinfo'
 export default {
-  name: 'listbox',
+  name: 'ListBox',
   directives: { infiniteScroll },
   components: {
     RecycleScroller
   },
+  props: ['title', 'listdata'],
   data() {
     return {
       data: [],
       loading: false,
-      busy: false,
-      dataList: [
-        { id: 1, sort: 1, province: '河北省', nub: '9960', percent: 95 },
-        { id: 2, sort: 2, province: '河北省', nub: '9960', percent: 80 },
-        { id: 3, sort: 3, province: '河北省', nub: '9960', percent: 65 },
-        { id: 4, sort: 4, province: '河北省', nub: '9960', percent: 62 },
-        { id: 5, sort: 5, province: '河北省', nub: '9960', percent: 58 },
-        { id: 6, sort: 6, province: '河北省', nub: '9960', percent: 50 },
-        { id: 7, sort: 7, province: '河北省', nub: '9960', percent: 48 },
-        { id: 8, sort: 8, province: '河北省', nub: '9960', percent: 40 },
-        { id: 9, sort: 9, province: '河北省', nub: '9960', percent: 38 },
-        { id: 10, sort: 10, province: '河北省', nub: '9960', percent: 30 },
-        { id: 11, sort: 11, province: '河北省', nub: '9960', percent: 28 },
-        { id: 12, sort: 12, province: '河北省', nub: '9960', percent: 20 },
-        { id: 1000, sort: 1000, province: '河北省', nub: '9960', percent: 10 }
-      ]
+      busy: false
     }
   },
   beforeMount() {
     // 改为list
-    this.dataList = this.dataList.map((item, index) => ({ ...item, index }))
-
-    this.fetchData((res) => {
-      this.data = res.results.map((item, index) => ({ ...item, index }))
-    })
+    this.dataList = this.listdata.map((item, index) => ({ ...item, index }))
   },
   methods: {
-    fetchData(callback) {
-      reqwest({
-        url: fakeDataUrl,
-        type: 'json',
-        method: 'get',
-        contentType: 'application/json',
-        success: (res) => {
-          callback(res)
-        }
-      })
-    },
     handleInfiniteOnLoad() {
       const data = this.data
       this.loading = false

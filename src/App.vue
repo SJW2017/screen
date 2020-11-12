@@ -8,7 +8,10 @@
           <div class="border-light top-box">
             <!-- 订货排行榜 -->
             <div class="list-box-top">
-              <ListBox></ListBox>
+              <ListBox
+                title="各省订货总量排行榜"
+                :listdata="dataList"
+              ></ListBox>
             </div>
             <a-row class="list-box-bottom" :gutter="16">
               <!-- 库存预警 -->
@@ -104,7 +107,6 @@ import MapChart from './components/MapChart'
 import PieChart from './components/PieChart'
 import Instrument from './components/Instrument'
 import BarChartx from './components/BarChartx'
-import ListBox from './components/ListBox'
 import ListBoxProduct from './components/ListBoxProduct'
 import ListBoxSorder from './components/ListBoxSorder'
 import ListBoxStore from './components/ListBoxStore'
@@ -126,7 +128,6 @@ export default {
     PieChart,
     Instrument,
     BarChartx,
-    ListBox,
     ListBoxProduct,
     ListBoxSorder,
     ListBoxStore,
@@ -186,6 +187,21 @@ export default {
             }
           ]
         }
+      ],
+      dataList: [
+        { id: 1, sort: 1, province: '河北省', nub: '10000', percent: 100 },
+        { id: 2, sort: 2, province: '河北省', nub: '9999', percent: 80 },
+        { id: 3, sort: 3, province: '河北省', nub: '9960', percent: 65 },
+        { id: 4, sort: 4, province: '河北省', nub: '9960', percent: 62 },
+        { id: 5, sort: 5, province: '河北省', nub: '9960', percent: 58 },
+        { id: 6, sort: 6, province: '河北省', nub: '9960', percent: 50 },
+        { id: 7, sort: 7, province: '河北省', nub: '9960', percent: 48 },
+        { id: 8, sort: 8, province: '河北省', nub: '9960', percent: 40 },
+        { id: 9, sort: 9, province: '河北省', nub: '9960', percent: 38 },
+        { id: 10, sort: 10, province: '河北省', nub: '9960', percent: 30 },
+        { id: 11, sort: 11, province: '河北省', nub: '9960', percent: 28 },
+        { id: 12, sort: 12, province: '河北省', nub: '9960', percent: 20 },
+        { id: 1000, sort: 1000, province: '河北省', nub: '9960', percent: 10 }
       ]
     }
   },
