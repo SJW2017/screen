@@ -1,8 +1,22 @@
 // components util
 import ListBox from './ListBox'
+import OrderDialog from './OrderDialog'
+import DeclarationDialog from './DeclarationDialog'
+import StoreDialog from './StoreDialog'
+import BrokenLine from './BrokenLine'
+import BrokenLineb from './BrokenLineb'
+import BrokenLineYear from './BrokenLineYear'
+import BarChartx from './BarChartx'
 
 const components = {
-  ListBox
+  ListBox,
+  OrderDialog,
+  BrokenLine,
+  BrokenLineb,
+  BrokenLineYear,
+  BarChartx,
+  DeclarationDialog,
+  StoreDialog
 }
 
 const install = function(Vue) {

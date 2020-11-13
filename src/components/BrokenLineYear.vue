@@ -1,12 +1,16 @@
 <template>
-  <div id="BrokenLine"></div>
+  <div>
+    <div class="chart-title">{{ title }}</div>
+    <div :id="blid"></div>
+  </div>
 </template>
 
 <script>
 import { Chart } from '@antv/g2'
 
 export default {
-  name: 'BrokenLine',
+  name: 'BrokenLineYear',
+  props: ['title', 'blid', 'linedata'],
   data() {
     return {
       data: [
@@ -22,19 +26,22 @@ export default {
   },
   created() {},
   mounted() {
+    this.getLineData()
     this.createLine()
   },
   methods: {
+    getLineData() {},
     createLine() {
       const chart = new Chart({
-        container: 'BrokenLine',
+        container: this.blid,
         autoFit: true,
-        height: 340
+        height: 250
       })
-      chart.data(this.data)
+      chart.data(this.linedata)
+
       chart.scale({
-        team: {
-          alias: '团队'
+        month: {
+          alias: '月份'
         },
         thisyear: {
           alias: '今年',
@@ -48,7 +55,7 @@ export default {
           nice: true
         }
       })
-      chart.axis('time', {
+      chart.axis('month', {
         grid: null,
         title: {}
       })
@@ -63,14 +70,13 @@ export default {
         showCrosshairs: true,
         shared: true
       })
-
       chart
         .line()
-        .position('team*thisyear')
+        .position('month*thisyear')
         .color('#4FAAEB')
       chart
         .line()
-        .position('team*lastyear')
+        .position('month*lastyear')
         .color('#9AD681')
         .shape('dash')
       chart.render()
@@ -78,3 +84,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.chart-title {
+  text-align: center;
+  margin-bottom: 10px;
+}
+</style>

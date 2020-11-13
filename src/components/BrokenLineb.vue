@@ -1,12 +1,16 @@
 <template>
-  <div id="BrokenLine"></div>
+  <div>
+    <div class="chart-title">{{ title }}</div>
+    <div :id="blid"></div>
+  </div>
 </template>
 
 <script>
 import { Chart } from '@antv/g2'
 
 export default {
-  name: 'BrokenLine',
+  name: 'BrokenLineb',
+  props: ['title', 'listdata', 'blid'],
   data() {
     return {
       data: [
@@ -27,9 +31,9 @@ export default {
   methods: {
     createLine() {
       const chart = new Chart({
-        container: 'BrokenLine',
+        container: this.blid,
         autoFit: true,
-        height: 340
+        height: 250
       })
       chart.data(this.data)
       chart.scale({
@@ -78,3 +82,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.chart-title {
+  text-align: center;
+  margin-bottom: 10px;
+}
+</style>

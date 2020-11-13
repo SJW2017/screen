@@ -10,7 +10,8 @@
             <div class="list-box-top">
               <ListBox
                 title="各省订货总量排行榜"
-                :listdata="dataList"
+                :listdata="declarationData"
+                type="order"
               ></ListBox>
             </div>
             <a-row class="list-box-bottom" :gutter="16">
@@ -20,7 +21,7 @@
               </a-col>
               <!-- 产品排行榜 -->
               <a-col :span="15" class="left-box-right">
-                <BarChartx></BarChartx>
+                <BarChartx bcid="bc1"></BarChartx>
               </a-col>
             </a-row>
           </div>
@@ -41,7 +42,28 @@
             </a-button>
           </div>
           <div class="data-nub flex-x">
-            <div class="data-nub-box flex-v">
+            <div @click="showModal">
+              <a-statistic
+                title="新增订货"
+                :value="112893000"
+                style="color:#fff"
+              />
+            </div>
+            <div @click="showModal('declaration')">
+              <a-statistic
+                title="新增报单"
+                :value="112893000"
+                style="color:#fff"
+              />
+            </div>
+            <div @click="showModal('store')">
+              <a-statistic
+                title="新增店铺"
+                :value="112893000"
+                style="color:#fff"
+              />
+            </div>
+            <!-- <div class="data-nub-box flex-v">
               <p>新增订货</p>
               <p><i class="i-money">￥</i>525555</p>
             </div>
@@ -52,7 +74,7 @@
             <div class="data-nub-box flex-v">
               <p>新增店铺</p>
               <p>525</p>
-            </div>
+            </div> -->
           </div>
           <MapChart></MapChart>
         </a-col>
@@ -61,11 +83,21 @@
           <div class="top-box">
             <!-- 报单排行榜 -->
             <div class="margin-b-10 border-light">
-              <ListBoxSorder></ListBoxSorder>
+              <!-- <ListBoxSorder></ListBoxSorder> -->
+              <ListBox
+                title="各省报单量排行榜"
+                :listdata="provinceOrderData"
+                type="declaration"
+              ></ListBox>
             </div>
             <!-- 复销排行榜 -->
             <div class="right-box-bottom border-light">
-              <ListBoxStore></ListBoxStore>
+              <ListBox
+                title="各省店铺复销量排行榜"
+                :listdata="salesData"
+                type="store"
+              ></ListBox>
+              <!-- <ListBoxStore></ListBoxStore> -->
             </div>
             <!-- <div id="c1"></div>
             <div id="c2"></div> -->
@@ -79,7 +111,9 @@
             <a-col :span="14">
               <StackedBarChart></StackedBarChart>
             </a-col>
-            <a-col :span="10"></a-col>
+            <a-col :span="10">
+              <BarChartx bcid="bc2"></BarChartx>
+            </a-col>
           </div>
         </a-col>
         <a-col :span="12">
@@ -88,12 +122,22 @@
               <StoreStatistics></StoreStatistics>
             </a-col>
             <a-col :span="12">
-              <BrokenLine></BrokenLine>
+              <BrokenLineb
+                title="2020年1月各团队业绩汇总表"
+                blid="bl1"
+              ></BrokenLineb>
             </a-col>
           </a-row>
         </a-col>
       </a-row>
+      <!-- <a-button type="primary" @click="showEditModal">编辑</a-button> -->
     </div>
+    <order-dialog :visible="appOrderVisible" @cancel="ahandleCancel" />
+    <declaration-dialog
+      :visible="appDeclarationVisible"
+      @cancel="ahandleCancel"
+    />
+    <store-dialog :visible="appStoreVisible" @cancel="ahandleCancel" />
   </a-config-provider>
 </template>
 
@@ -102,14 +146,13 @@ import Hello from './components/Hello'
 import ChartOne from './components/ChartOne'
 import StackedBarChart from './components/StackedBarChart'
 import StoreStatistics from './components/StoreStatistics'
-import BrokenLine from './components/BrokenLine'
 import MapChart from './components/MapChart'
 import PieChart from './components/PieChart'
 import Instrument from './components/Instrument'
-import BarChartx from './components/BarChartx'
 import ListBoxProduct from './components/ListBoxProduct'
 import ListBoxSorder from './components/ListBoxSorder'
 import ListBoxStore from './components/ListBoxStore'
+import TestAdd from './components/DialogBox1'
 
 import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN'
 import moment from 'moment'
@@ -127,13 +170,12 @@ export default {
     MapChart,
     PieChart,
     Instrument,
-    BarChartx,
     ListBoxProduct,
     ListBoxSorder,
     ListBoxStore,
     StackedBarChart,
     StoreStatistics,
-    BrokenLine
+    TestAdd
   },
   data() {
     return {
@@ -188,7 +230,7 @@ export default {
           ]
         }
       ],
-      dataList: [
+      declarationData: [
         { id: 1, sort: 1, province: '河北省', nub: '10000', percent: 100 },
         { id: 2, sort: 2, province: '河北省', nub: '9999', percent: 80 },
         { id: 3, sort: 3, province: '河北省', nub: '9960', percent: 65 },
@@ -202,7 +244,41 @@ export default {
         { id: 11, sort: 11, province: '河北省', nub: '9960', percent: 28 },
         { id: 12, sort: 12, province: '河北省', nub: '9960', percent: 20 },
         { id: 1000, sort: 1000, province: '河北省', nub: '9960', percent: 10 }
-      ]
+      ],
+      provinceOrderData: [
+        { id: 1, sort: 1, province: '河南省', nub: '10000', percent: 90 },
+        { id: 2, sort: 2, province: '河南省', nub: '9999', percent: 80 },
+        { id: 3, sort: 3, province: '河南省', nub: '9960', percent: 65 },
+        { id: 4, sort: 4, province: '河南省', nub: '9960', percent: 62 },
+        { id: 5, sort: 5, province: '河南省', nub: '9960', percent: 58 },
+        { id: 6, sort: 6, province: '河南省', nub: '9960', percent: 50 },
+        { id: 7, sort: 7, province: '河南省', nub: '9960', percent: 48 },
+        { id: 8, sort: 8, province: '河南省', nub: '9960', percent: 40 },
+        { id: 9, sort: 9, province: '河南省', nub: '9960', percent: 38 },
+        { id: 10, sort: 10, province: '河南省', nub: '9960', percent: 30 },
+        { id: 11, sort: 11, province: '河南省', nub: '9960', percent: 28 },
+        { id: 12, sort: 12, province: '河南省', nub: '9960', percent: 20 },
+        { id: 1000, sort: 1000, province: '河南省', nub: '9960', percent: 10 }
+      ],
+      salesData: [
+        { id: 1, sort: 1, province: '海南省', nub: '10000', percent: 90 },
+        { id: 2, sort: 2, province: '海南省', nub: '9999', percent: 80 },
+        { id: 3, sort: 3, province: '海南省', nub: '9960', percent: 65 },
+        { id: 4, sort: 4, province: '海南省', nub: '9960', percent: 62 },
+        { id: 5, sort: 5, province: '海南省', nub: '9960', percent: 58 },
+        { id: 6, sort: 6, province: '海南省', nub: '9960', percent: 50 },
+        { id: 7, sort: 7, province: '海南省', nub: '9960', percent: 48 },
+        { id: 8, sort: 8, province: '海南省', nub: '9960', percent: 40 },
+        { id: 9, sort: 9, province: '海南省', nub: '9960', percent: 38 },
+        { id: 10, sort: 10, province: '海南省', nub: '9960', percent: 30 },
+        { id: 11, sort: 11, province: '海南省', nub: '9960', percent: 28 },
+        { id: 12, sort: 12, province: '海南省', nub: '9960', percent: 20 },
+        { id: 1000, sort: 1000, province: '海南省', nub: '9960', percent: 10 }
+      ],
+      dialogStatus: '',
+      appOrderVisible: false,
+      appDeclarationVisible: false,
+      appStoreVisible: false
     }
   },
   // 生命周期 - 创建完成（可以访问当前this实例）
@@ -242,6 +318,25 @@ export default {
         .position('genre*sold')
         .color('genre')
       chart1.render()
+    },
+    ahandleCancel() {
+      this.appOrderVisible = false
+      this.appDeclarationVisible = false
+      this.appStoreVisible = false
+    },
+    showModal() {
+      // console.log(typeof type)
+      // console.log(type === 'order')
+      console.log(this.appOrderVisible)
+      this.appOrderVisible = true
+      // if (type === 'order') {
+      //   this.appOrderVisible = true
+      console.log(this.appOrderVisible)
+      // } else if (type === 'declaration') {
+      //   this.appDeclarationVisible = true
+      // } else if (type === 'store') {
+      //   this.appStoreVisible = true
+      // }
     }
   },
   // 计算属性
@@ -274,7 +369,7 @@ export default {
   display: none !important;
 }
 h1 {
-  color: #fff;
+  color: #fff !important;
 }
 .margin-b-10 {
   margin-bottom: 10px;
@@ -300,23 +395,24 @@ h1 {
   padding-right: 2px !important;
 }
 .border-light {
-  border: rgba(255, 255, 255, 0.6) solid 1px;
+  /* border: rgba(255, 255, 255, 0.5) dashed 1px; */
   border-radius: 10px;
-  box-shadow: 0 0 8px #ddd;
-  -moz-box-shadow: 0 0 8px #ddd;
-  -webkit-box-shadow: 0 0 8px #ddd;
+  box-shadow: 0 0 10px #ddd;
+  -moz-box-shadow: 0 0 10px #ddd;
+  -webkit-box-shadow: 0 0 10px #ddd;
   padding: 10px;
 }
 .border-light:hover {
-  border: #fc0 solid 1px;
-  box-shadow: 0 0 8px #ddd;
-  -moz-box-shadow: 0 0 8px #ddd;
-  -webkit-box-shadow: 0 0 8px #ddd;
+  /* border: #fc0 solid 1px; */
+  box-shadow: 0 0 10px #fc0;
+  -moz-box-shadow: 0 0 10px #fc0;
+  -webkit-box-shadow: 0 0 10px #fc0;
 }
 .flex-v {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 }
 .flex-x {
   display: -webkit-flex;
@@ -337,7 +433,7 @@ h1 {
 .data-nub {
   width: 70%;
   text-align: center;
-  margin: 20px 0;
+  margin: 20px auto;
 }
 .data-nub-box {
   width: 120px;
@@ -366,11 +462,16 @@ h1 {
   margin-bottom: 10px;
 }
 .list-box-bottom {
-  width: 100%;
   height: 51%;
   margin-bottom: 10px;
 }
 .left-box-right {
   height: 100%;
+}
+.ant-statistic-title {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+.ant-statistic-content {
+  color: #fff !important;
 }
 </style>

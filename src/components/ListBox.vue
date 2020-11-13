@@ -21,11 +21,11 @@
         :infinite-scroll-distance="10"
       >
         <a-list-item slot-scope="{ item }">
-          <a-col :span="4">
+          <a-col>
             <i class="list-sort">{{ item.sort }}</i>
           </a-col>
-          <a-col :span="4">{{ item.province }}</a-col>
-          <a-col :span="4">{{ item.nub }}</a-col>
+          <a-col>{{ item.province }}</a-col>
+          <a-col>{{ item.nub }}</a-col>
           <a-col :span="8">
             <a-progress
               v-if="item.index == 0"
@@ -51,15 +51,32 @@
               status="active"
             />
           </a-col>
-          <a-col :span="4">
-            <!-- <a-button type="dashed" size="small"> 详情 </a-button> -->
-            <a-button type="link">
-              详情
-            </a-button>
-          </a-col>
+          <slot name="more">
+            <a-col>
+              <!-- <a-button type="dashed" size="small"> 详情 </a-button> -->
+              <a-button type="link" @click="showModal">
+                详情
+              </a-button>
+            </a-col>
+          </slot>
         </a-list-item>
       </RecycleScroller>
       <a-spin v-if="loading" class="demo-loading" />
+      <!-- <a-modal
+        :title="title"
+        :visible="visible"
+        :confirm-loading="confirmLoading"
+        @cancel="handleCancel"
+        :footer="null"
+      >
+        <p>{{ title }}</p>
+      </a-modal> -->
+      <order-dialog :visible="orderVisible" @cancel="handleCancel" />
+      <declaration-dialog
+        :visible="declarationVisible"
+        @cancel="handleCancel"
+      />
+      <store-dialog :visible="storeVisible" @cancel="handleCancel" />
     </a-list>
   </div>
 </template>
@@ -74,12 +91,16 @@ export default {
   components: {
     RecycleScroller
   },
-  props: ['title', 'listdata'],
+  props: ['title', 'listdata', 'type'],
   data() {
     return {
       data: [],
       loading: false,
-      busy: false
+      busy: false,
+      orderVisible: false,
+      declarationVisible: false,
+      storeVisible: false,
+      confirmLoading: false
     }
   },
   beforeMount() {
@@ -94,6 +115,27 @@ export default {
         this.$message.warning('Infinite List loaded all')
         this.busy = true
         this.loading = false
+      }
+    },
+    showModal() {
+      if (this.type === 'order') {
+        this.orderVisible = true
+      } else if (this.type === 'declaration') {
+        this.declarationVisible = true
+      } else if (this.type === 'store') {
+        this.storeVisible = true
+      }
+    },
+    handleCancel() {
+      if (this.type === 'order') {
+        this.orderVisible = false
+        console.log('orderVisible')
+      } else if (this.type === 'declaration') {
+        this.declarationVisible = false
+        console.log('declarationVisible')
+      } else if (this.type === 'store') {
+        this.storeVisible = false
+        console.log('storeVisible')
       }
     }
   }
@@ -116,6 +158,7 @@ export default {
   border-bottom: #fff solid 1px;
 }
 .list-sort {
+  white-space: nowrap;
   display: inline-block;
   width: 15px;
   height: 15px;

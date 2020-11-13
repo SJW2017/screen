@@ -3,9 +3,16 @@
     <a-row class="list-header">
       单品销售排行榜：单品/总销售量
     </a-row>
-    <vue-scroll :ops="ops" style="width:100%;height:100%">
+    <a-row class="list-item-title">
+      <a-col :span="12">单品</a-col>
+      <a-col :span="12">销售量</a-col>
+    </a-row>
+    <div class="list-scroll">
+      <div :id="bcid"></div>
+    </div>
+    <!-- <vue-scroll :ops="ops" style="width:100%;height:100%">
       <div id="barchartx"></div>
-    </vue-scroll>
+    </vue-scroll> -->
   </div>
 </template>
 
@@ -13,7 +20,8 @@
 import { Chart } from '@antv/g2'
 
 export default {
-  name: 'barchartx',
+  name: 'BarChartx',
+  props: ['bcid'],
   data() {
     return {
       tryfirstData: [
@@ -54,7 +62,7 @@ export default {
   methods: {
     tryfirst() {
       const chart1 = new Chart({
-        container: 'barchartx',
+        container: this.bcid,
         autoFit: true,
         height: 400
       })
@@ -101,3 +109,13 @@ export default {
   computed: {}
 }
 </script>
+<style>
+.list-scroll {
+  height: 240px;
+  overflow: hidden;
+  overflow-y: auto;
+}
+.list-item-title {
+  text-align: center;
+}
+</style>
